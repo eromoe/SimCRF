@@ -1,0 +1,101 @@
+Metadata-Version: 1.1
+Name: simcrf
+Version: 0.1
+Summary: simple and quick crf wrapper for crfsuit
+Home-page: UNKNOWN
+Author: Mithril
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: # CRF 训练
+        
+        ## Training Data Format
+        
+        crf通常使用iob标注方式(https://en.wikipedia.org/wiki/Inside_Outside_Beginning)
+        
+        需要至三列数据：词，词性，标签
+        
+        标签:
+        I: 实体中
+        O: 实体外
+        B: 实体头
+        
+        Example:
+        
+            打印机 n O
+            采购 v O
+            品目 n O
+            采购 v O
+            单位 n O
+            曲周县 nr B
+            职业 n I
+            技术 n I
+            教育 vn I
+            中心 n I
+            行政区域 n O
+            曲周县 nr O
+            公告 n O
+            时间 n O
+        
+            技术 n I
+            教育 vn I
+            中心 n I
+            采购 v O
+            单位地址 n O
+            曲周县 nr B
+            职业 n I
+            技术 n I
+            教育 vn I
+            中心 n I
+            采购 v O
+            单位 n O
+            联系方式 l O
+            18932708288 m O
+        
+            中心 n I
+            采购 v O
+            人 n O
+            地址 n O
+            ： x O
+            曲周县 nr B
+            职业 n I
+            技术 n I
+            教育 vn I
+            中心 n I
+            采购 v O
+            人 n O
+            联系方式 l O
+            ： x O
+        
+        
+        ## Train model
+        
+            from simcrf
+            ner = CRFNer()
+        
+            # save model
+        
+            # load model
+            crf_model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'model', 'crf_bid_4_entities.pkl')
+            ner = CRFNer(crf_model_path)
+        
+            # extract
+            text = r'''福建康泰招标有限公司受福州市仓山区第六中心小学的委托，就VR教室设备采购项目项目（项目编号：KTZB-2017017）组织采购，评标工作已经结束，中标结果如下： 一、项目信息项目编号：KTZB-2017017项目名称：VR教室设备采购项目项目联系人：周女士联系方式：0591-87803505 二、采购单位信息采购单位名称：福州市仓山区第六中心小学采购单位地址：仓山区采购单位联系方式：邱主任18350117477 三、项目用途、简要技术要求及合同履行日期：项目用途：教学简要技术要求：中标供应商负责组织专业技术人员进行设备安装调试，采购人应提供必须的基本条件和专人配合，保证各项安装工作顺利进行。中标供应商应协调配合完成项目的安装、调试且直至验收合格，使用正常。其他详见招标文件第三章招标内容及要求。  四、采购代理机构信息采购代理机构全称：福建康泰招标有限公司采购代理机构地址：福州市鼓楼区湖东路169号中闽天骜大厦13层采购代理机构联系方式：周女士0591-87803505 五、中标信息招标公告日期：2017年03月14日中标日期：2017年04月06日总中标金额：24.88 万元（人民币）中标供应商名称、联系地址及中标金额：序号          中标供应商名称         中标供应商联系地址           中标金额(万元)        1           福州裕兴网络科技有限公司            福建省福州市仓山区城门镇南江滨西大道198号福州海峡国际会展中心地下一层东区办公室中心A-056（自贸实验区内）            24.88        评审专家名单：陈晓英（组长）、林雪山、陈景瑞、陈同熙、邱其林（业主评委） 中标标的名称、规格型号、数量、单价、服务要求：中标标的名称：VR云端集控系统等其他详见招标文件规格型号：动感课堂VACYC01等其他详见投标文件数量：1批单价：24.88万元服务要求： 中标供应商应对本次投标设备承诺自验收合格后免费上门保修一年，三个月包换,其它详见招标文件要求。 六、其它补充事宜                  采购人和评审专家的推荐意见（采用书面推荐供应商参加采购活动的需填）： 经评标委员会评议，各投标人的资格及符合性均符合招标文件要求。  '''
+            tokens = [tuple(pair) for pair in pseg.cut(text)]
+            ret = ner.entity_extract(tokens)
+        
+            print(ret)
+Keywords: c,r,f, ,c,r,f,s,u,t,e
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Web Environment
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

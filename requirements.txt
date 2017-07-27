@@ -1,0 +1,3 @@
+sklearn_crfsuite
+numpy
+jieba
