@@ -102,8 +102,11 @@ def tag2features(tags, i, window=2):
 
     return features
 
-def sent2features(sent):
+def taggedtokens2features(sent):
     return [word2features(sent, i) for i in range(len(sent))]
+
+def tokens2features(sent):
+    return [token2features(sent, i) for i in range(len(sent))]
 
 def sent2labels(sent):
     return [label for token, postag, label in sent]
