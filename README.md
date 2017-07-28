@@ -2,7 +2,7 @@
 
 This project is aim to provide a super easy way to train crf model and extract entities from text.
 
-[中文文档](https://github.com/eromoe/SimCRF/blob/master/README.CN.md
+[中文文档](https://github.com/eromoe/SimCRF/blob/master/README.CN.md)
 
 ## Installation
 
@@ -142,5 +142,6 @@ It take off the feature trasfroming and trainning apart from you.So to customize
     ret = ner.extract(sent)
 
 sklearn-crfsuite docs: https://sklearn-crfsuite.readthedocs.io/
+
 crfsuite docs: http://www.chokkan.org/software/crfsuite/manual.html
 
