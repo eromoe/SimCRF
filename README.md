@@ -17,11 +17,11 @@ input data can be:
 1. word, pos_tag, iob_tag
 2. word,  iob_tag
 
-tag:
+iob_tag:
 
 - I: inside of entity
 - O: outside of entity
-- B: begin of entity
+- B: beginning of entity
 
 Example:
 
@@ -76,7 +76,6 @@ Example:
 #### Train model:
 
     from simcrf import SimCRF
-    from simcrf.utils import read_iob_file
 
     ner = SimCRF()
 

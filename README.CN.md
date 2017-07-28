@@ -70,8 +70,7 @@ Example:
 #### Train model:
 
     from simcrf import SimCRF
-    from simcrf.utils import read_iob_file
-    
+
     ner = SimCRF()
 
     # note: also support only tokens
@@ -93,7 +92,7 @@ Example:
     ner.fit(X_train, y_train)
 
 #### Save model
-    
+
     ner.save('~/crf_test.pkl')
 
 #### Load model
@@ -132,5 +131,6 @@ SimCrf的目的是提供一种傻瓜式的训练与实体提取方式，定制�
     ret = ner.extract(sent)
 
 sklearn-crfsuite docs: https://sklearn-crfsuite.readthedocs.io/
+
 crfsuite docs: http://www.chokkan.org/software/crfsuite/manual.html
 
