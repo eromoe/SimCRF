@@ -71,7 +71,7 @@ Example:
     ： x O
 
 
-## Useage
+## Usage
 
 #### Train model:
 
