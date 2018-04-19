@@ -6,13 +6,13 @@ from __future__ import unicode_literals, print_function, absolute_import
 from six import string_types
 
 
-def sent2labels(self, sent):
+def sent2labels(sent):
     return [label for token, postag, label in sent]
 
-def sent2tokens(self, sent):
+def sent2tokens(sent):
     return [token for token, postag, label in sent]
 
-def tokens2offsets(self, tokens):
+def tokens2offsets(tokens):
     offsets = []
     start = 0
     for token in tokens:
@@ -21,21 +21,39 @@ def tokens2offsets(self, tokens):
     return offsets
 
 class CrfTrasformer(object):
-    def __init__(self, window=2):
+    def __init__(self, window=2, tokenizer=None):
         self.window = window
+        self.tokenizer = tokenizer
 
-    def transform_one(self, tokens):
+    def _transform_one(self, tokens):
         '''
-        sent: list of token(str) or list of (token, tag)
+        tokens: list of token(str) or list of (token, tag)
         '''
         zipped = not isinstance(tokens[0], string_types)
         return self.taggedtokens2features(tokens) if zipped else self.tokens2features(tokens)
 
-    def transform(self, sents):
+    def transform_one(self, sent, tokenize=False):
+        '''
+        sent: 1. string 
+              2.list of token(str)
+              3.list of (token, tag)
+        '''
+        if tokenize:
+            sent = self.tokenizer(sent)
+
+        return self._transform_one(sent)
+
+
+    def transform(self, sents, tokenize=False):
         '''
         sents : list of words, words can be list of token(str) or list of (token, tag)
         '''
-        return [self.transform_one(s) for s in sents]
+        if tokenize:
+            return [self._transform_one(self.tokenizer(s)) for s in sents]
+        else:
+            return [self._transform_one(s) for s in sents]
+
+    
 
     def word2features(self, sent, i):
         word = sent[i][0]

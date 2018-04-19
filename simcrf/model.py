@@ -18,15 +18,15 @@ from .features import tokens2offsets, CrfTrasformer
 
 class SimCRF(object):
 
-    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2):
+    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None):
         self.crf_model = crf_model
         if not crf_model and crf_model_path:
             with open(crf_model_path, 'rb') as f:
                 self.crf_model = pickle.load(f)
 
-        self.transformer = CrfTrasformer(transform_window)
+        self.transformer = CrfTrasformer(window=transform_window, tokenizer=tokenizer)
 
-    def fit(self, X_train, y_train):
+    def fit(self, X_train, y_train, X_test=None, y_test=None):
         crf_model = sklearn_crfsuite.CRF(
             algorithm='lbfgs',
             c1=0.1,
@@ -34,12 +34,12 @@ class SimCRF(object):
             max_iterations=100,
             all_possible_transitions=True
         )
-        self.crf_model = crf_model.fit(X_train, y_train)
+        self.crf_model = crf_model.fit(X_train, y_train, X_test, y_test)
 
         return crf_model
 
-    def transform(self, X):
-        return self.transformer.transform(X)
+    def transform(self, *args, **kwargs):
+        return self.transformer.transform(*args, **kwargs)
 
     def save(self, output_path):
         with open(output_path, 'wb') as f:
@@ -82,24 +82,30 @@ class SimCRF(object):
 
         return entities
 
-    def extract_taggedtokens(self, sent, output='plain'):
+    def extract_tagedtokens(self, tagedtokens, output='plain'):
         '''
-            sent: list of (token, tag)
+            tagedtokens: list of (token, tag)
         '''
-        tokens = [token for token, tag in sent]
-        X_features = self.transformer.transform_one(sent)
+        tokens = [token for token, tag in tagedtokens]
+        X_features = self.transformer.transform_one(tagedtokens)
         y = self.crf_model.predict_single(X_features)
         return self.pretty_entities(tokens, y, output=output)
 
-    def extract(self, tokens, tags=None, output='plain'):
+    def extract(self, sent=None, tokens=None, tags=None, output='plain'):
         '''
+            sent: string
             tokens: list of token
             tags: list of tag
         '''
-        if tags:
-            X_features = self.transformer.transform_one(list(zip(tokens, tags)))
+        if sent:
+            X_features = self.transformer.transform_one(tokens, tokenize=True)
+        elif tokens:
+            if tags:
+                X_features = self.transformer.transform_one(list(zip(tokens, tags)))
+            else:
+                X_features = self.transformer.transform_one(tokens)
         else:
-            X_features = self.transformer.transform_one(tokens)
+            raise Exception('Invalid input! Must have sent or tokens')
 
         y = self.crf_model.predict_single(X_features)
 
