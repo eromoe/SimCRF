@@ -82,7 +82,7 @@ class SimCRF(object):
 
         return entities
 
-    def extract_tagedtokens(self, tagedtokens, output='plain'):
+    def extract_taggedtokens(self, tagedtokens, output='plain'):
         '''
             tagedtokens: list of (token, tag)
         '''
