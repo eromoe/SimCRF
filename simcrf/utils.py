@@ -7,6 +7,13 @@ import json
 import codecs
 import jieba.posseg as pseg
 
+
+def is_string(obj):
+    try:
+        return isinstance(obj, basestring)
+    except NameError:
+        return isinstance(obj, str)
+
 def read_iob_file(input_path):
     if input_path.endswith('.txt'):
         with codecs.open(input_path, 'r', 'utf-8') as f:

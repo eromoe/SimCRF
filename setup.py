@@ -19,7 +19,7 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 setup(
     name='simcrf',
-    version='0.1.1',
+    version='0.1.3',
 
     description='simple and quick crf wrapper for crfsuite',
     long_description=long_description,
