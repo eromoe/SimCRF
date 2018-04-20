@@ -33,11 +33,11 @@ def pos_range_cut(sentence, HMM=True):
         yield w, (start, start+len(w.word))
         start += len(w.word)
 
-def pos_cut(sentence, HMM=True):
+def pos_offset_cut(sentence, HMM=True):
     start = 0
     for w in pseg.cut(sentence, HMM=HMM):
         yield w, start
         start += len(w.word)
 
-def jieba_transform(text):
+def pos_cut(text):
     return [tuple(pair) for pair in pseg.cut(text)]
