@@ -7,10 +7,10 @@ from six import string_types
 
 
 def sent2labels(sent):
-    return [label for token, postag, label in sent]
+    return (label for token, postag, label in sent)
 
 def sent2tokens(sent):
-    return [token for token, postag, label in sent]
+    return (token for token, postag, label in sent)
 
 def tokens2offsets(tokens):
     offsets = []
@@ -49,9 +49,9 @@ class CrfTrasformer(object):
         sents : list of words, words can be list of token(str) or list of (token, tag)
         '''
         if tokenize:
-            return [self._transform_one(self.tokenizer(s)) for s in sents]
+            return (self._transform_one(self.tokenizer(s)) for s in sents)
         else:
-            return [self._transform_one(s) for s in sents]
+            return (self._transform_one(s) for s in sents)
 
     
 
@@ -154,8 +154,8 @@ class CrfTrasformer(object):
         return features
 
     def taggedtokens2features(self, sent):
-        return [self.word2features(sent, i) for i in range(len(sent))]
+        return (self.word2features(sent, i) for i in range(len(sent)))
 
     def tokens2features(self, sent):
-        return [self.token2features(sent, i) for i in range(len(sent))]
+        return (self.token2features(sent, i) for i in range(len(sent)))
 

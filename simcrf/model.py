@@ -19,7 +19,7 @@ from .features import tokens2offsets, CrfTrasformer
 
 class SimCRF(object):
 
-    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None, verbose=False):
+    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None, max_iterations=50, verbose=False):
         self.crf_model = crf_model
         if not crf_model and crf_model_path:
             with open(crf_model_path, 'rb') as f:
@@ -27,6 +27,7 @@ class SimCRF(object):
 
         self.transformer = CrfTrasformer(window=transform_window, tokenizer=tokenizer)
         self.verbose= verbose
+        self.max_iterations = max_iterations
 
     def fit(self, X_train, y_train, X_test=None, y_test=None, verbose=False):
         crf_model = sklearn_crfsuite.CRF(
