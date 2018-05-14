@@ -154,8 +154,8 @@ class CrfTrasformer(object):
         return features
 
     def taggedtokens2features(self, sent):
-        return (self.word2features(sent, i) for i in range(len(sent)))
+        return [self.word2features(sent, i) for i in range(len(sent))]
 
     def tokens2features(self, sent):
-        return (self.token2features(sent, i) for i in range(len(sent)))
+        return [self.token2features(sent, i) for i in range(len(sent))]
 

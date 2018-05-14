@@ -19,7 +19,12 @@ from .features import tokens2offsets, CrfTrasformer
 
 class SimCRF(object):
 
-    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None, max_iterations=50, verbose=False):
+    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None, max_iterations=50, verbose=False, preiob=True):
+        '''
+
+        preiob: IOB mark can be tag head or tail, depend to trainning data
+        '''
+
         self.crf_model = crf_model
         if not crf_model and crf_model_path:
             with open(crf_model_path, 'rb') as f:
@@ -28,6 +33,7 @@ class SimCRF(object):
         self.transformer = CrfTrasformer(window=transform_window, tokenizer=tokenizer)
         self.verbose= verbose
         self.max_iterations = max_iterations
+        self.preiob = preiob
 
     def fit(self, X_train, y_train, X_test=None, y_test=None, verbose=False):
         crf_model = sklearn_crfsuite.CRF(
@@ -45,9 +51,20 @@ class SimCRF(object):
     def transform(self, *args, **kwargs):
         return self.transformer.transform(*args, **kwargs)
 
-    def save(self, output_path):
-        with open(output_path, 'wb') as f:
-            pickle.dump(self.crf_model, f)
+    def save(self, path):
+        with open(path, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, path):
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+
+    @classmethod
+    def load_crfsute_model(cls, path, **kwargs):
+        with open(path, 'rb') as f:
+            crf_model = pickle.load(f)
+            return cls(crf_model, **kwargs)
 
     def pretty_entities(self, tokens, iob_tags, output='plain'):
         '''
@@ -64,9 +81,9 @@ class SimCRF(object):
         curtag = None
 
         for cursor, tag in enumerate(iob_tags):
-            if tag.endswith('B'):
+            if tag.startswith('B') if self.preiob else tag.endswith('B'):
                 start = cursor
-                curtag = tag.split('-')[0]
+                curtag = tag.split('-')[1 if self.preiob else 0 ]
             elif start and tag == 'O':
                 # entities.append((start, cursor))
                 if output == 'plain':
