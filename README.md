@@ -103,14 +103,14 @@ Example:
 
 #### Load model
 
-    ner = SimCRF(crf_model_path='~/crf_test.pkl')
+    ner = SimCRF.load('~/crf_test.pkl')
 
 #### Extract entities
 
 To support different tokenizer, you need tokenize your text first and feed to crf model.
 
     import jieba.posseg as pseg
-    ner = SimCRF(crf_model_path='xxxx.pkl')
+    ner = SimCRF.load('xxxx.pkl')
 
     text = '''    　哈尔滨工业大学招标与采购管理中心受总务处的委托，就哈尔滨工业大学部分住宅小区供热入网项目（项目编号：GC2017DX035）组织采购，评标工作已经结束，中标结果如下：
 
@@ -148,10 +148,11 @@ To support different tokenizer, you need tokenize your text first and feed to cr
 
     采购代理机构地址：哈尔滨市南岗区西大直街92号哈尔滨工业大学行政办公楼203房间
 
-    采购代理机构联系方式：李占奎 王 吉 电话： 0451-86417953 13936645563'''
+    采购代理机构联系方式：李占奎 王 吉 电话： 0451-86417953 13936645563
+    '''
 
     sent = [tuple(pair) for pair in pseg.cut(text)]
-    ret = ner.extract(sent)
+    ret = ner.extract_taggedtokens(sent)
 
     print(ret)
 
@@ -179,4 +180,3 @@ It take off the feature trasfroming and trainning apart from you.So to customize
 sklearn-crfsuite docs: https://sklearn-crfsuite.readthedocs.io/
 
 crfsuite docs: http://www.chokkan.org/software/crfsuite/manual.html
-
