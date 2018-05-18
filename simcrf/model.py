@@ -14,7 +14,7 @@ from six import string_types
 import sklearn_crfsuite
 import numpy as np
 
-from .features import tokens2offsets, CrfTrasformer
+from .features import tokens2offsets, CrfTransformer
 
 
 class SimCRF(object):
@@ -30,7 +30,7 @@ class SimCRF(object):
             with open(crf_model_path, 'rb') as f:
                 self.crf_model = pickle.load(f)
 
-        self.transformer = CrfTrasformer(window=transform_window, tokenizer=tokenizer)
+        self.transformer = CrfTransformer(window=transform_window, tokenizer=tokenizer)
         self.verbose= verbose
         self.max_iterations = max_iterations
         self.preiob = preiob

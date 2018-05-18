@@ -5,7 +5,7 @@ from __future__ import unicode_literals, print_function, absolute_import, divisi
 
 
 from simcrf import SimCRF
-from simcrf.features import sent2labels, CrfTrasformer
+from simcrf.features import sent2labels, CrfTransformer
 from simcrf.utils import pos_cut
 from lxml import html
 from textminer.project.bid.crf import bid_crf_extractor
@@ -61,7 +61,7 @@ def test():
     print(extract_project(html2text(text)) )
 
     # x = bid_crf_extractor.models['project']
-    # tf = CrfTrasformer(tokenizer=pos_cut)
+    # tf = CrfTransformer(tokenizer=pos_cut)
     # xf = tf.transform_one(text)
     # xf = list(xf)
     # print(x.crf_model.predict_single(xf))

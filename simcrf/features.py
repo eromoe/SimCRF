@@ -20,7 +20,7 @@ def tokens2offsets(tokens):
         start += len(token)
     return offsets
 
-class CrfTrasformer(object):
+class CrfTransformer(object):
     def __init__(self, window=2, tokenizer=None):
         self.window = window
         self.tokenizer = tokenizer
