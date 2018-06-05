@@ -75,29 +75,29 @@ Example:
 
 #### Train model:
 
-    from simcrf import SimCRF
+from simcrf import SimCRF
 
-    ner = SimCRF()
+ner = SimCRF()
 
-    # note: also support only tokens
-    X_train = [
-        [
-            ('打印机', 'n'), ('采购', 'v'), ('品目', 'n'), ('采购', 'v'), ('单位', 'n'), ('曲周县', 'nr'), ('职业', 'n'), ('技术', 'n'), ('教育', 'vn'), ('中心', 'n'), ('行政区域', 'n'), ('曲周县', 'nr'), ('公告', 'n'), ('时间', 'n')
-        ],
-        [
-            ('打印机', 'n'), ('采购', 'v'), ('品目', 'n'), ('采购', 'v'), ('单位', 'n'), ('曲周县', 'nr'), ('职业', 'n'), ('技术', 'n'), ('教育', 'vn'), ('中心', 'n'), ('行政区域', 'n'), ('曲周县', 'nr'), ('公告', 'n'), ('时间', 'n')
-        ]
+# note: also support only tokens
+X_train = [
+    [
+        ('打印机', 'n'), ('采购', 'v'), ('品目', 'n'), ('采购', 'v'), ('单位', 'n'), ('曲周县', 'nr'), ('职业', 'n'), ('技术', 'n'), ('教育', 'vn'), ('中心', 'n'), ('行政区域', 'n'), ('曲周县', 'nr'), ('公告', 'n'), ('时间', 'n')
+    ],
+    [
+        ('打印机', 'n'), ('采购', 'v'), ('品目', 'n'), ('采购', 'v'), ('单位', 'n'), ('曲周县', 'nr'), ('职业', 'n'), ('技术', 'n'), ('教育', 'vn'), ('中心', 'n'), ('行政区域', 'n'), ('曲周县', 'nr'), ('公告', 'n'), ('时间', 'n')
     ]
+]
 
-    y_train = [
-        ['O','O','O','O','O','B','I','I','I','I','O','O','O','O'],
-        ['O','O','O','O','O','B','I','I','I','I','O','O','O','O']
-    ]
+y_train = [
+    ['O','O','O','O','O','B','I','I','I','I','O','O','O','O'],
+    ['O','O','O','O','O','B','I','I','I','I','O','O','O','O']
+]
 
-    X_features = ner.transform(X_train)
-    ner.fit(X_features, y_train)
+X_features = ner.transform(X_train)
+ner.fit(X_features, y_train)
 
-    print9ner.extract_taggedtokens(X_train[0]))
+print(ner.extract_taggedtokens(X_train[0]))
 
 
 
