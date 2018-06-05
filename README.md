@@ -94,8 +94,12 @@ Example:
         ['O','O','O','O','O','B','I','I','I','I','O','O','O','O']
     ]
 
-    X_train = ner.transform(X_train)
-    ner.fit(X_train, y_train)
+    X_features = ner.transform(X_train)
+    ner.fit(X_features, y_train)
+
+    print9ner.extract_taggedtokens(X_train[0]))
+
+
 
 #### Save model
 

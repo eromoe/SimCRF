@@ -14,16 +14,22 @@ def test_transform_text(sents):
     new_sents = [pos_cut(sent) for sent in sents]
     
     r1 = ner.transformer.transform(sents, tokenize=True)
+    r1 = list(r1)
 
     o1 = ner.transformer.transform_one(sents[0], tokenize=True)
+    o1 = list(o1)
 
     r2 = ner.transformer.transform(new_sents)
+    r2 = list(r2)
 
     o2 = ner.transformer.transform_one(new_sents[0])
+    o2 = list(o2)
 
     r3 = ner.transform(sents, tokenize=True)
+    r3 = list(r3)
 
     r4 = ner.transform(new_sents)
+    r4 = list(r4)
 
     assert r1 == r2
     assert r1 == r3
@@ -59,4 +65,4 @@ def test_train_predict(sents):
     except Exception as e:
         raise(e)
     else:
-        raise AssertionError('Must failed here, because !')
+        raise AssertionError('Must failed here !')

@@ -13,16 +13,14 @@ import unicodedata
 from six import string_types
 import sklearn_crfsuite
 import numpy as np
-
+from .utils import utf8
 from .features import tokens2offsets, CrfTransformer
 
 
 class SimCRF(object):
 
-    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None, max_iterations=50, verbose=False, preiob=True):
+    def __init__(self, crf_model=None, crf_model_path=None, transform_window=2, tokenizer=None, max_iterations=50, verbose=False):
         '''
-
-        preiob: IOB mark can be tag head or tail, depend to trainning data
         '''
 
         self.crf_model = crf_model
@@ -33,7 +31,6 @@ class SimCRF(object):
         self.transformer = CrfTransformer(window=transform_window, tokenizer=tokenizer)
         self.verbose= verbose
         self.max_iterations = max_iterations
-        self.preiob = preiob
 
     def fit(self, X_train, y_train, X_test=None, y_test=None, verbose=False):
         crf_model = sklearn_crfsuite.CRF(
@@ -85,13 +82,14 @@ class SimCRF(object):
         curtag = None
 
         for cursor, tag in enumerate(iob_tags):
-            if tag.startswith('B') if self.preiob else tag.endswith('B'):
+            if tag.startswith('B'):
                 start = cursor
-                curtag = tag.split('-')[1 if self.preiob else 0 ]
+                # trainning use B-PROJECT
+                curtag = tag.split('-')[-1]
             elif start and tag == 'O':
                 # entities.append((start, cursor))
                 if output == 'plain':
-                    entities.append((curtag, ''.join(tokens[start:cursor])))
+                    entities.append((curtag, utf8('').join(tokens[start:cursor])))
                 elif output == 'token':
                     entities.append(tokens[start:cursor])
                 elif output == 'offset':
