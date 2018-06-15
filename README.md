@@ -75,8 +75,8 @@ Example:
 
 #### Train model:
 
+```python
 from simcrf import SimCRF
-
 ner = SimCRF()
 
 # note: also support only tokens
@@ -98,7 +98,7 @@ X_features = ner.transform(X_train)
 ner.fit(X_features, y_train)
 
 print(ner.extract_taggedtokens(X_train[0]))
-
+```
 
 
 #### Save model
@@ -113,73 +113,77 @@ print(ner.extract_taggedtokens(X_train[0]))
 
 To support different tokenizer, you need tokenize your text first and feed to crf model.
 
-    import jieba.posseg as pseg
-    ner = SimCRF.load('xxxx.pkl')
+```python
+import jieba.posseg as pseg
+ner = SimCRF.load('xxxx.pkl')
 
-    text = '''    　哈尔滨工业大学招标与采购管理中心受总务处的委托，就哈尔滨工业大学部分住宅小区供热入网项目（项目编号：GC2017DX035）组织采购，评标工作已经结束，中标结果如下：
+text = '''    　哈尔滨工业大学招标与采购管理中心受总务处的委托，就哈尔滨工业大学部分住宅小区供热入网项目（项目编号：GC2017DX035）组织采购，评标工作已经结束，中标结果如下：
 
-    一、项目信息
+一、项目信息
 
-    项目编号：GC2017DX035
+项目编号：GC2017DX035
 
-    项目名称：哈尔滨工业大学部分住宅小区供热入网
+项目名称：哈尔滨工业大学部分住宅小区供热入网
 
-    项目联系人：李占奎 王 吉
+项目联系人：李占奎 王 吉
 
-    联系方式：电话： 0451-86417953 13936645563
+联系方式：电话： 0451-86417953 13936645563
 
-    
 
-    二、采购单位信息
 
-    采购单位名称：总务处
+二、采购单位信息
 
-    采购单位地址：哈尔滨市南岗区西大直街92号
+采购单位名称：总务处
 
-    采购单位联系方式：孔繁武 0451-86417975
+采购单位地址：哈尔滨市南岗区西大直街92号
 
-    
+采购单位联系方式：孔繁武 0451-86417975
 
-    三、项目用途、简要技术要求及合同履行日期：
 
-    见结果公示
 
-    
+三、项目用途、简要技术要求及合同履行日期：
 
-    四、采购代理机构信息
+见结果公示
 
-    采购代理机构全称：哈尔滨工业大学招标与采购管理中心
 
-    采购代理机构地址：哈尔滨市南岗区西大直街92号哈尔滨工业大学行政办公楼203房间
 
-    采购代理机构联系方式：李占奎 王 吉 电话： 0451-86417953 13936645563
-    '''
+四、采购代理机构信息
 
-    sent = [tuple(pair) for pair in pseg.cut(text)]
-    ret = ner.extract_taggedtokens(sent)
+采购代理机构全称：哈尔滨工业大学招标与采购管理中心
 
-    print(ret)
+采购代理机构地址：哈尔滨市南岗区西大直街92号哈尔滨工业大学行政办公楼203房间
+
+采购代理机构联系方式：李占奎 王 吉 电话： 0451-86417953 13936645563
+'''
+
+sent = [tuple(pair) for pair in pseg.cut(text)]
+ret = ner.extract_taggedtokens(sent)
+
+print(ret)
+```
 
 #### Custom crfsuite model
 
 SimCrf aim to provide a simple and easy way to train and extract entities.
 It take off the feature trasfroming and trainning apart from you.So to customize crf model, you need train a sklearn-crfsuite model. You would change trainning parameter and generation of features yourself, and pass the model to SimCRF:
 
-    from simcrf import SimCRF
-    import sklearn_crfsuite
+```python
+from simcrf import SimCRF
+import sklearn_crfsuite
 
-    crf_model = sklearn_crfsuite.CRF(
-        algorithm='lbfgs',
-        c1=0.1,
-        c2=0.1,
-        max_iterations=100,
-        all_possible_transitions=True
-    )
-    crf_model.fit(X_train, y_train)
+crf_model = sklearn_crfsuite.CRF(
+    algorithm='lbfgs',
+    c1=0.1,
+    c2=0.1,
+    max_iterations=100,
+    all_possible_transitions=True
+)
+crf_model.fit(X_train, y_train)
 
-    ner = SimCRF(crf_model)
+ner = SimCRF(crf_model)
 
-    ret = ner.extract(sent)
+ret = ner.extract(sent)
+```
 
 sklearn-crfsuite docs: https://sklearn-crfsuite.readthedocs.io/
 
